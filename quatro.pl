@@ -15,7 +15,7 @@ inserir(X, [Y | Tail], [Y | ResultTail]) :- % Quando X é maior que Y, Y é mant
 % Primeiro é chamado inserir e verifica se X é menor ou igual a Y.
 % Se a proposição acima for falsa, utiliza a última inserir para chamar recursivamente inserir, mas sem o Y (apenas Tail).
 % Quando for satisfeita a afirmação que X é maior ou igual a Y, ou que Tail é vazia, X é acrescentado na lista.
-% Depois são feitos vários inserir com (Yanteriores, ResultTail, List) até todos os Y acabarem.
+% Depois são feitos vários inserir com (Y_anteriores, ResultTail, List) até todos os Y acabarem.
 
 
 
