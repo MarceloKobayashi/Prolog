@@ -76,7 +76,7 @@ PROLOG
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 
--- Cálculo de predicados e Prova de Teoremas
+aaa2-- Cálculo de predicados e Prova de Teoremas
 
 - O cálculo de predicados fornece um método de expressar coleções de proposições. O uso de coleções é determinar se quaisquer fatos 
   interessantes ou úteis podem ser inferidos a partir delas.
@@ -140,7 +140,7 @@ PROLOG
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
--- Origem
+aaa3-- Origem
 - Alain Colmerauer e Phillippe Roussel, na Universidade de Aix-Marseille, com assistência de Robert Kowalski, em Ediburgo.
 - Interesses em Processamento de linguagem natural (Colmerauer e Roussel) e na prova automatizada de teoremas (Kowalski).
 - Pouca atenção, até que em 1981 surge um projeto japonês cujo objetico era desenvolver máquinas inteligentes e Prolog foi escolhida.
@@ -149,7 +149,7 @@ PROLOG
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
 
--- Elementos básicos de Prolog
+aaa4-- Elementos básicos de Prolog
 - OBS.: Dialetos de Prolog podem ser agrupados em diversas categorias:
 	> Os que cresceram a partir do grupo em Marselha;
 	> Os que vieram a partir do grupo de Edimburgo;

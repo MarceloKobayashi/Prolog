@@ -1,7 +1,7 @@
 list([], []).
 
 list([Head | Tail], List) :-
-    list(Tail, Result),     % Recursiva para pegar todos os elementos.
+    list(Tail, Result),     % Recursiva para tirar todos os elementos um por um até chegar na primeira regra.
     inserir(Head, Result, List).    % Chama a função de inserir Head na posição correta de Result
 
 inserir(X, [], [X]).    % Se a lista estiver vazia, lista é Head
