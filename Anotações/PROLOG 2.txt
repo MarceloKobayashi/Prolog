@@ -1,0 +1,65 @@
+PROLOG continuação
+
+- 7) Estrutura de listas
+	
+	* Lista: sequência de qualquer número de elementos(átomos, proposições atômicas ou quaisquer outros termos, inclusive lista).
+	* Elementos separados por vírgulas e a lista é delimitada por colchetes.
+	* Notação especial: [X | Y]
+		> Cabeça é X e cauda é Y;
+		> (?) Correspondem a CAR e CDR em LISP
+	
+	* São criadas com uma estrutura simples: new_list([apple, prune, grape, kumquat]).
+		> Diz que a lista entre () é um novo elemento da relação chamada 'new_list'.
+		> Não vincula a lista a uma variável chamada new_list, em vez disso faz o tipo de coisa que a proposição male(jake) faz.
+		  Isto é, ela diz que [apple, ...] é um novo elemento de new_list.
+		> Podemos ter uma segunda proposição com um argumento de lista como: new_list([apricot, peach, pear]).
+	
+	* No modo de consulta, um dos elementos de new_list pode ser separado em cabeça e cauda com:
+		new_list([New_List_Head | New_List_Tail]).
+		> Sendo que o head é apple e o tail é [prune, grape, kumquat].
+		> Se isso fizesse parte de um objetivo composto e um backtracking forçasse uma nova avaliação dele, head seria apricot e
+		  tail seria [peach, perl]. Pois [apricot, peach, pear] é o próximo elemento de new_list.
+
+	* O operador | pode ser usado para criar listas a partir de componentes instanciados.
+		> [element_1 | list_2], tal que element_1 é pickle e list_2 é [peanut, prune, popcorn]. Criaria uma lista [pickle, peanut,
+															  prune, popcorn].
+		> O operador | pode especificar uma construção ou separação de lista.
+
+	* Append => Um tipo de recursão é utilizado para produzir a nova lista.
+		> Os 2 primeiros parâmetros para append são listas e o terceiro é a lista resultante:
+			append([], List, List). % quando a lista é vazia é inserida, o resultado é a outra lista / proposição de término
+			append([Head | List_1], List_2, [Head, List_3]) :- append(List_1, List_2, List_3). % Proposição de recursão
+				|-> O primeiro elemento da nova lista é igual ao primeiro elemento da primeira lista, pois ambos são Head,
+				|   sempre que Head for instanciado para um valor, todas suas ocorrências no objetivo serão instanciadas
+				|   para esse valor.
+				|-> O lado direito diz que a cauda da List_1 possui a List_2 anexada a ela, para formar a cauda da resultante.
+				|-> Uma forma de ler é anexar [Head | List_1] a qualquer List_2 para produzir [Head | List_3], mas somente se
+				    List_3 for formada pela anexação de List_1 a List_2.
+				
+		> A lista resultante não é construída até a recursão produzir a condição de término, primeira lista vazia.
+
+	* Reverse => Verifica se uma lista é o inverso da outra.
+		> EXEMPLO:
+			list_op_2([],[]).
+			list_op_2([Head | Tail], List) :- list_op_2(Tail, Result), append(Result, [Head], List).
+
+			+ Primeiro faz a função recursiva com appends até que a lista fique vazia e use o reverse para conferir.
+			+ Coloque o último elemento e use o reverse para conferir.
+			+ Coloque os outros elementos usando listas vazias para depois inserir na que foi usada no append do elemento da etapa.
+			+ Use reverse na lista do passo anterior.
+
+	* Se precisássemos saber se um símbolo está na lista:
+		member(Element, [Element | _]). % True se o primeiro elemento da lista for o símbolo.
+		member(Element, [_ | List]) :- member(Element, List). % True se o Element estiver na cauda da lista.
+				
+
+
+
+
+
+
+
+
+
+		
+	

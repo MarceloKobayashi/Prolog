@@ -1,0 +1,24 @@
+PROLOG RESUMO
+
+-- Usar como base de dados uma coleção de fatos e regras (definem relacionamentos entre fatos).
+	> Usar um processo automático de inferência para verificar a validade de novas proposições;
+	> Supondo que os fatos e regras sejam verdadeiros.
+	> Prova automática de teoremas.
+
+-- Origens advêm do desenvolvimento da regra de resolução para inferência lógica.
+
+-- São não procedurais, ou seja, as características da solução são dadas, mas o processo de obter a solução não.
+-- As sentenças Prolog são fatos, regras ou objetivos.
+	> Maioria constituída de estruturas, que são proposições atômicas e operadores lógicos, além de expressões aritméticas.
+
+-- Resolução é a principal atividade de um interpretador Prolog, usar regras e fatos para provar um objetivo.
+	> Backtracking é usado;
+	> Envolve o casamento de padrões entre proposições;
+	> Quando variáveis estão envolvidas, elas podem ser instanciadas para valores a fim de fornecer casamentos;
+	> O processo de instanciação é chamado de unificação.
+
+-- Existem muitos problemas na programação lógica, como eficiência e laços de repetição infinita.
+	> Algumas vezes, o programador deve declarar informações de fluxo de controle nos programas;
+	> Além dos problemas da premissa do mundo fechado e da negação.
+
+-- Usada em áreas diferentes, mas principalmente em SGBDR, sistemas especialistas e processamento de linguagem natural.

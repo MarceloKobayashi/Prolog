@@ -1,0 +1,295 @@
+PROLOG
+
+- Baseada em proposições(Vera) => Sentença lógica que pode ser verdadeira ou não.
+- Consiste em objetos e relacionamentos entre eles
+
+- Lógica simbólica
+	*Expressar proposições;
+	*Expressar os relacionamentos entre proposições;
+	*Descrever como novas proposições podem ser inferidas a partir de outras, que se presumem verdadeiras.
+
+- Cálculo de predicados
+
+-------------------------------------------------------------------------------------------------------------------
+
+-- Proposições
+
+- Atômicas
+	* Termos compostos => Elemento de uma relação matemática escrito em forma que tem a aparência de uma notação
+			      de função matemática.
+	* Possuem 2 partes
+		|-> Functor: Símbolo da função que nomeia a relação.
+		|-> Lista ordenada de parâmetros: Representam um elemento da relação.
+
+	* Único parâmetro = 1-tupla, Dois parâmetros = 2-tupla...7
+
+	*EXEMPLO:
+		man(jake) -> 1-tupla na relação chamada 'man'
+		like(bob, steak) -> 2-tupla na relação chamada 'like'
+
+	* Podem ser definidas de 2 modos: um no qual ela é definida como verdadeira e outro no qual a verdade da pro-
+	  posição é algo que deve ser determindada. => Podem ser fatos ou consultas (as do exemplo podem ser ambos).
+
+- Compostas
+	* Têm duas ou mais proposições atômicas, conectadas por conectores lógicos/operadores.
+	* São 5:
+		> Negação (gancho) => Não 'a'
+		> Conjunção (U para baixo) => 'a' e 'b'
+		> Disjunção (U) => 'a' ou 'b'
+		> Equivalência(=) => 'a' é equivalente a 'b'
+		> Implicação(C ou C virado) => 'b' implica 'a' e vice-versa
+	* Os mais em cima têm precedência mais alta.
+	* Podem ser incluídas variáveis, mas apenas se forem introduzidas por símbolos especiais/quantificadores:
+		> Universal(A invertido) => Para todo X, P é verdadeiro
+		> Existencial(E virado) => Existe um X, tal que P é verdadeiro
+	* Escopos atômicos às proposições às quais eles estão anexados, e têm precedência mai alta que qualquer
+	  um dos operadores.
+	
+	* EXEMPLO:
+		A*X.(mulher(X) implica humano(X)) => Se X é mulher, X é humano
+		E*X.(mãe(mary,X) conjunção homem(X)) => Existe X tal que mary é a mãe de X e X é homem
+
+----------------------------------------------------------------------------------------------------------------------
+
+-- Forma clausal
+
+- Problema => Existem muitas formas de definir proposições com o mesmo significado = Muita redundância
+	* Faz-se necessário uma forma padrão das proposições, a forma clausal é uma delas.
+	
+- Teoria
+	* Tem a seguinte sintaxe geral: B1 U B2 ... U Bn C A1 conjunção A2 ... conjunção Am, na qual As e Bs são termos.
+	* Seu significado é se todos os As são verdadeiros, então pelo menos um B é também.
+	* As conjunções e disjunções devem aparecer nessa ordem, o lado esquerdo é chamado de antecedente
+	  e o direito de consequente.
+	
+	* As principais características das proposições nessa forma são:
+		> Quantificadores existenciais não são obrigatórios;
+		> Quantificadores universais são implícitos no uso de variáveis nas proposições atõmicas;
+		> Nenhum operador, além da conjunção e disjunção, é obrigatório.
+
+	* EXEMPLO:
+		likes(bob,trout) C likes(bob,fish) conjunção fish(trout)
+			> Se bob gosta de peixe e se truta é um peixe, então bob gosta de truta (primeiro lê conjunção)
+		
+		father(louis,al) U father(louis,violet) C father(al,bob) conj mother(violet,bob) conj grandfather(louis,bob)
+			> Se al é pai de bob, violet é mãe de bob e louis é vô de bob, então ou louis é pai de al ou louis é pai de violet.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Cálculo de predicados e Prova de Teoremas
+
+- O cálculo de predicados fornece um método de expressar coleções de proposições. O uso de coleções é determinar se quaisquer fatos 
+  interessantes ou úteis podem ser inferidos a partir delas.
+
+- A resolução é uma regra de inferência que permite às proposições inferidas serem computadas a partir de proposições dadas, fornecendo
+  um método com aplicação potencial para a prova automática de teoremas. => Aplicada a proposições na forma clausal.
+
+	* Suponha que existam duas proposições:
+		> P1 C P2 => P2 implica P1
+		> Q1 C Q2 => Q2 implica Q1
+		> E suponha que P2 seja idêntico a Q1, de modo que ambas virem T:
+			> T C P2 => P2 implica T
+			> Q1 C T => T implica Q1
+			> Portanto P2 implica Q1 (Q1 C P2)
+
+	* O processo de inferir uma proposição através de duas originais é chamado de resolução.
+
+	* EXEMPLO:
+		older(joanne,jake) C mother(joanne,jake) => joanne é mãe de jake, portanto joanne é mais velha
+		wiser(joanne,jake) C older(joanne,jake) => joanne é mais velha que jake, portanto joanne é mais sábia
+		
+		> Portanto, wiser(joanne,jake) C mother(joanne,jake) => joanne é mãe de jake, portanto joanne é mais sábia
+	
+	* Resolução consiste em juntar os termos dos lados esquerdos por 'OU' e os lados direitos por 'E', em seguida qualquer termo que
+	  aparecer em ambos os lados é removido de ambos os lados.
+
+	** A presença de variáveis nas proposições exige que a resolução encontre valores para essas que permitam o processo de junção ser
+	   bem-sucedido, tal processo de determinar valores é chamado de unificação.
+		> A atribuição temporária de valores a variáveis para permitir a unificação é chamada de instanciação.
+		> Se o valor não for válido, realiza-se o backtracking(voltar para instanciar a variável com um valor diferente).
+	
+	* Refutação completa => Propriedade da resolução capaz de detectar qualquer inconsistência em um conjunto de proposições. Dado um
+	      			de proposições inconsistentes, a resolução pode provar que elas são inconsistentes. Permitindo que a reso-
+				lução seja capaz de provar teoremas.
+
+	* Um modo de simplificar o processo de resolução é restringir a forma das proposições.
+		> Cláusulas de Horn(restrição útil) => só podem estar em uma de duas formas:
+			>> Uma única proposição atômica no lado esquerdo; => Usadas para definir relacionamentos.
+			>> Lado esquerdo vazio. => Usadas para definir fatos.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+- Linguagens usadas para programação lógica são chamadas de declarativas, pois os programas escritos nelas consistem em declarações, em vez
+  de atribuições e sentenças de fluxo de controle.
+
+-- Semântica
+- Não existe uma maneira simples de determinar o significado de cada sentença.
+- Mais simples que da linguagem imperativa, pois o significado de uma proposição é determinado pela própria sentença.
+- Uma das vantagens das linguagens declarativas em relação às imperativas.
+
+-- Programação não procedural
+- Não descreve como um resultado será computado, mas a forma do resultado.
+- Dar ao computador as info relevantes e um método de inferência para computar os resultados desejados.
+
+-- Ordenação
+- Só é necessário descrever as características da lista ordenada => Alguma permutação da lista, tal que, para cada par de elementos 
+								    adjacentes tenha um relacionamento entre eles.
+- 
+
+-- Programas que usam apenas Resolução sofrem de problemas de eficiência de execução
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Origem
+- Alain Colmerauer e Phillippe Roussel, na Universidade de Aix-Marseille, com assistência de Robert Kowalski, em Ediburgo.
+- Interesses em Processamento de linguagem natural (Colmerauer e Roussel) e na prova automatizada de teoremas (Kowalski).
+- Pouca atenção, até que em 1981 surge um projeto japonês cujo objetico era desenvolver máquinas inteligentes e Prolog foi escolhida.
+
+- Com esse anúncio, surge um interesse em IA e em programação lógica nos EUA e países europeus.
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Elementos básicos de Prolog
+- OBS.: Dialetos de Prolog podem ser agrupados em diversas categorias:
+	> Os que cresceram a partir do grupo em Marselha;
+	> Os que vieram a partir do grupo de Edimburgo;
+	> Os que foram desenvolvidos para microcomputadores.
+
+- Ao invés de tentar descrever a sintaxe de diversos dialetos, escolhe-se o desenvolvido em Edimburgo, chamada de Sintaxe de Edimburgo.
+
+- 1) Termos
+	* Uma constante, variável ou uma estrutura.
+		> a)Constante => É um átomo ou um inteiro. Um átomo são valores simbólicos de Prolog, em particular, é uma cadeia de letras
+			         dígitos e sublinhados que iniciam com uma letra minúscula ou uma cadeia de qualquer ASCII delimitados entre
+			         apóstrofes.
+		> b)Variável => Qualquer cadeia de letras, dígitos e sublinhados que iniciam com uma letra maiúcula ou um sublinhado.
+			* Instanciação: vinculação de um valor a uma variável, e dessa forma a um tipo. Ocorre apenas no processo de reso-
+					lução. Uma variável que não recebeu um valor é não instanciada.
+				+ Duram apenas o tempo necessário para satisfazer um objetivo completo, o que envolve a prova ou falsidade
+				  de uma proposição.
+		> c)Estrutura => Representam as proposições atômicas do cálculo de predicados e sua forma geral é: functor(lista de parâmetros).
+			* Functor é qualquer átomo e é usado para identificar a estrutura.
+			* Lista de parâmetros pode ser qualquer lista de termos.
+			
+			=> Estruturas são a maneira de especificar fatos. Elas podem ser consideradas objetos, permitindo que os fatos sejam
+			   definidos em termos de diversos átomos relacionados, basicamente Relações.
+			=> Estrutura também é um predicado quando seu contexto a especifica como uma consulta(pergunta).
+
+- 2) Sentença de fatos
+	* Sentenças usadas para construir hipóteses ou a base de dados de informações predefinidas(sentenças a partir das quais novas info podem
+	  ser inferidas).
+	* Cláusulas de Horn sem cabeça/sem lado esquerdo são uma estrutura única, interpretada como um fato. Fatos são proposições que se presume
+	  serem verdadeiras.
+		> EXEMPLO: female(shelley).
+			   male(bill).
+		> Note que cada sentença é terminada por um ponto.
+
+- 3) Sentença de regras
+	* A outra forma básica de sentenças para construir uma base de dados é a cláusula de Horn com cabeça, chamadas de regras.
+	* Pode ser relacionada a um teorema da matemática a partir do qual uma conclusão pode ser tirada se o conjunto das condições for satisfeito.
+	* O lado direito(antecedente)/ parte 'se', e o lado esquerdo(consequente)/ parte 'então'.
+		> Se o antecedente for verdadeiro, então o consequente também deve ser.
+		> Consequente deve ser um termo simples.(Horn)
+	
+	* Conjunções contêm vários termos separados por 'E', mas em Prolog tal operação é implícita.
+	* As estruturas que especificam proposições atômicas em uma conjunção são separadas por vírgulas, consideradas 'E'.
+		> female(shelley), child(shelley).
+
+	* Forma geral da sentença de cláusula de Horn com cabeça é: consequente :- expressão_antecedente.
+		> O consequente pode ser concluído se a exp antecedente for verdadeira ou puder se tornar verdadeira por alguma instanciação de variáveis;
+		> EXEMPLO: ancestor(mary, shelley) :- mother(mary, shelley). % Se mary é mãe da shelley, então mary é ancestral de shelley.
+		
+		> Variáveis podem ser utilizadas para generalizar seu significado:
+			parent(X,Y) :- mother(X,Y).
+			parent(X,Y) :- father(X,Y).
+			grandparent(X,Z) :- parent(X,Y) , parent(Y,Z).
+
+	* O operador '=' é verdadeiro se os dois operandos são iguais e o 'not' é o inverso. => X=Y ou not(X=Y)
+
+- 4) Sentença de objetivos
+	* Proposições cuja veracidade ou falsidade queremos que o sistema prove são chamadas de objetivos ou consultas.
+	* A forma sintática das sentenças de objetivos é idêntica à das cláusulas de Horn sem cabeça: man(fred).
+		> Deve ter alguma implementação em Prolog para distinguir elas.
+		> Implementações de Prolog interativas fazem isso de dois modos:
+			+ Um para informar fatos e sentenças de regras;
+			+ Um para informar objetivos.
+
+	* Para qual o sistema responderia 'yes' ou 'no', de acordo com a base de dados de fatos e relacionamentos dados.
+	* Quando se tem uma variável, o sistema não apenas valida o objetivo, como também identifica as instanciações das variáveis
+	  que tornam o objetivo verdadeiro.
+		> EXEMPLO: father(X,mike) % o sistema tentará, por unificação, encontrar uma instanciação de X que resulte em um valor verdadeiro para
+					    o objetivo.
+
+- 5) O processo de Inferência
+	* Essa seção cobre a resolução de Prolog.
+	* Quando um objetivo é uma proposição composta, cada um dos fatos/estruturas são chamados de subobjetivo.
+	* Para provar que um objetivo é verdadeiro, o processo de inferência deve encontrar uma cadeia de inferências e/ou fatos na base de dados que
+	  conecte o objetivo a um ou mais fatos nessa base.
+		> Por exemplo: Se Q é o objetivo, ele deve ser encontrado como fato na bd ou o processo de inferência deve encontrar um fato P1 e uma
+			       sequência de proposições P2, ..., Pn tal que:
+					P2 :- P1.
+					...
+					Q :- Pn
+		> Para encontrar os Ps deve ser feito comparações de termos uns com os outros.	
+
+	* O processo é complicado por regras com lados direitos compostos e regras com variáveis.
+	* Casamento: fornecer um subobjetivo por meio de 'casar' proposições.
+
+   a)	* Para tentar casar um objetivo com um fato existem duas estratégias:
+		> Bottom-up / Forward chaining: Sistema começa com os fatos e regras e tenta encontrar uma sequência de casamentos que levem ao objetivo.
+		> Top-down / Backward chaining: Começar com o objetivo e tenta encontrar uma sequência de proposições que casem com ele e levem a algum
+						conjunto de fatos originais.
+	
+		>> Em geral, o segundo funciona bem quando existem um conjunto pequeno de respostas candidatas.
+		>> O primeiro é melhor quando o número de possíveis respostas é grande.
+	
+   b)	* Próxima questão surge sempre que o objetivo tem mais de uma esturtura, sendo ela se a busca da resolução é feita em profundidade ou em largura.
+		> Depth first: Encontra uma sequência completa de proposições(uma prova) para o primeiro subobjetivo antes de trabalhar com os outros.
+		> Breadth first: Funciona em todos os subobjetivos em paralelo.
+		
+		>> Segunda consome mais memória.
+
+   c)	* Backtracking: Quando o sistema não consegue mostrar a verdade de um subobjetivo, ele abandona tal e volta para o sub anterior e tenta encontrar
+		   	uma solução alternativa para ele. Uma nova solução é encontrada iniciando-se a busca ondea busca anterior para tal subobjetivo parou.
+
+	* O Prolog utiliza o backward chaining, pois acreditava que seria mais adequado para uma classe maior de problemas, e depth first, pois ela pode
+	  ser feita com menos recursos computacionais.
+	
+
+- 6) Aritmética simples (Questão??)
+	* Prolog suporta variáveis inteiras e aritmética de inteiros.
+	* Permite uma sintaxe mais abreviada com 'is' e todas as variáveis na expressão já devem estar instanciadas, menos a que está a esquerda do 'is.
+		> A is B / 17 + C.
+		> B e C são instanciadas, mas A não, o que fará A ser instanciada com o valor da expressão.
+		
+		> A semântica de uma proposição 'is' é diferente de uma sentença de atribuição em uma linguagme imperativa.
+
+	* Trace => Estrutura predefinida que mostra as instanciações de valores a variáveis em cada um dos passos para satisfazer um objetivo.
+		> Usada para entender e depurar programas;
+		> Modelo de rastreamento => Descreve a execução de Prolog em 4 eventos:
+			+ Chamar: início da tentativa de satisfazer um objetivo;
+			+ Sair: Quando um objetivo foi satisfeito;
+			+ Refazer: Quando um retorno faz com que seja feita outra tentativa de satisfazer novamente um objetivo;
+			+ Falhar: Quando um objetivo falha.
+			
+			+ O 3 e 4 são exclusivos para programação lógica.
+
+			+ EXEMPLO: 
+				likes(jake, chocolate). % jake gosta de choco
+				likes(jake, apricots). % jake gosta de apri
+				likes(darcie, licorice). % darcie gosta de licor
+				likes(darcie, apricots). % darcie gosta de apri
+				
+				trace. 
+				likes(jake, X), likes(darcie, X). % jake e darcie gostam de X
+
+				(1) 1 Call: likes(jake, _0)? 		=> jake gosta de _0
+				(1) 1 Exit: likes(jake, chocolate) 	=> atribui choco em _0
+				(2) 1 Call: likes(darcie, chocolate)? 	=> darcie gosta de choco(_0)?
+				(2) 1 Fail: likes(darcie, chocolate) 	=> falso
+				(1) 1 Redo: likes(jake, _0)? 		=> refaz... jake gosta de _0
+				(1) 1 Exit: likes(jake, apricots) 	=> atribui apri em _0
+				(3) 1 Call: likes(darcie, apricots)? 	=> darcie gosta de apri(_0)?
+				(3) 1 Exit: likes(darcie, apricots)	=> verdadeiro, darcie gosta de apri
+
+				X = apricots

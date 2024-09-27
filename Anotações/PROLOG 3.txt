@@ -1,0 +1,122 @@
+PROLOG 3
+
+-- Deficiências de Prolog
+
+- 1) Controle da ordem de resolução
+	* Diretamente prejudicial a uma das vantagens da programação lógica, a de que programas não especificam como as soluções devem ser encontradas.
+		> Determinam como seu aspecto deve ser.
+		> O uso indevido de modificar o fluxo de controle.
+	
+	* Por razões de eficiência, permite que o usuário controle a ordem do casamento de padrões.
+	* O usuário pode colocar certas regras que são mais propensas a serem bem-sucedidas no início da base de dados.
+	* Permite algum controle explícito do backtracking, feito com o operador de corte especificado com '!'.
+		> O operador de corte é um objetivo, não um operador.	
+		> Um subobjetivo à sua esquerda em um objetivo composto não pode ser satisfeito novamente por backtracking.
+
+		> EXEMPLO: a, b, !, c, d => Tal objetivo seria usado caso se soubesse que sempre que 'c' falha, é inútil tentar satisfazer
+					    novamente 'b' ou 'a'.
+		> Permitir que o usuário torne os programas mais eficientes, pra não satisfazer novamente subobjetivos.
+		> Se a lista passada for um conjunto, onde cada elemento só aparece uma vez, não adianta ficar voltando, pois se 'member'
+		  for bem-sucedida, mas o próximo subobjetivo falhar, vai tentar o backtracking, mas member não pode ser bem-sucedida no-
+		  vamente, pois só tem um elemento de cada.
+			member(Element, [Element | _]).
+			member(Element, [_ | List]) :- member(Element, List).	
+			
+			+ Nesse caso, a solução para tal ineficiência é adicionar um lado direito à primeira sentença, de término, com o 
+			  operador de corte:
+				member(Element, [Element | _]) :- !.
+			+ O backtracking não tentará satisfazer novamente member, mas fará o subobjetivo inteiro falhar.
+
+		> O corte é útil em uma estratégia de programação em Prolog chamada gerar e testar.
+			+ O objetivo consistem em subobjetivos que geram soluções em potencial, verificadas por subobjetivos posteriores
+			  do tipo "teste".
+			+ Soluções rejeitadas exigem backtracking para subobjetivos de "geração", com novas soluções em potencial.
+
+		> Utilizado para fazer programas lógicos terem um fluxo de controle inspirado em estilos de programação imperativa.
+
+- 2) Premissa do mundo fechado
+	* Único conhecimento do Prolog é sua base de dados.
+	* Prolog pode provar que um objetivo é verdadeiro, mas quando a base de dados não tem informações para provar de forma absoluta,
+	  não se pode provar um objetivo como falso. => Já que não pode provar verdadeiro, torna falso.
+	* Ou seja, o Prolog é um sistema verdadeiro/falha em vez de verdadeiro/falso.
+
+	* Tal premissa não é tão estranha, pois o sistema judicial utiliza: "Os suspeitos são inocentes até que se prove o contrário.".
+	* Está relacionada ao problema da negação (3)).
+
+- 3) Problema da negação
+	* A negação em Prolog não é um negação clássica, mas uma negação baseada na falha de prova.
+	* Assume que a base de dados contém todas as informações relevantes.
+	* Se algo não pode ser provado, é falso, ao utilizar o not, torna verdadeiro.
+
+	* Outro problema é na instanciação:
+		member(X, [mary, fred, barb]). % retorna mary
+		not(member(X, [mary, fred, barb])). % retorna false, pois a de dentro foi bem-sucedida
+		not(not(member(X, [mary, fred, barb]))). % retorna X, mas sem instanciar mary
+
+	* Se B1, ..., Bn forem verdadeiros, então A é verdadeiro, mas independente de qualquer B, não se pode provar que A é falso.
+
+- 4) Limitações intrínsecas
+	* A programação lógica fornece uma programação não procedural, ou seja, um sistema especifica o que um programa deve fazer,
+	  mas não precisam especificar como isso deve ser feito.
+
+	* Ordernação de listas é um processo muito devagar em programação lógica, pois o programa não sabe como ordenar, a não ser
+	  enumerando todas as permutações de uma lista até que por acaso seja feita uma lista ordenada.
+	* Entretanto, a programação lógica tem diversas aplicações úteis e é baseada em um conceito intrigante.
+
+
+-- Aplicações
+
+- 1) SGBDR
+	* Utilizam o SQL, que também é uma linguagem não procedural, pois os usuários não descrevem como obter uma resposta, mas ca-
+	  racterísticas da resposta.
+	* Tabelas simples de informação podem ser descritas por estruturas Prolog, assim como relacionamentos de tabelas.
+		> O processo de recuperar dados é inerente à operação de resolução.
+		> As sentenças de objetivo fornecem consultas para o SGBDR.
+
+	* Vantagem de implementar SGBDR usando programação lógica é que apenas uma linguagem é necessária.	
+	* Outra vantagem é que a capacidadede dedução é predefinida.
+	
+	* Uma desvantagem disso é que a implementação é mais lenta, inferências lógicas levam mais tempo que métodos de busca usando
+	  programação imperativa.
+
+- 2) Sistemas especialistas
+	* Sistemas projetados para emular especialidades humanas em algum domínio em particular.
+	* Consistem em uma base de dados de fatos, um processo de inferência, algumas heurísticas(regras) e uma interface que faz o 
+	  sistema se parecer mais com um consultor humano especialista.
+	* "Aprendem" a partir do processo de utilização. => Interrogam o usuário para ober informação adicional quando necessário.
+	* Problema: Tratar das inconsistências e incompletudes inevitáveis da base de dados.
+	* Exemplo: APES => Inclui um recurso muito flexível para obter informações do usuário durante a construção de um sistema especialista.	
+			> Inclui também um segundo interpretador que produz explicações para suas respostas a consultas.
+			> British Nationality Act
+
+- 3) Processamento de linguagem natural
+	* Sintaxe das linguagens => Formas de programação lógica foram descobertas como equivalentes às GLC.
+	* Procedimentos de prova em programação lógica => Descobertos como equivalentes a certas estratégias de análise sintática.
+	
+	* A resolução de backward chaining(objetivo -> proposições) pode ser usada para analisar sintaticamente sentenças, cujas
+	  estruturas são descritas por gramáticas livres de contexto.
+
+	* Alguns tipos de semântica podem se tornar claros por meio da modelagem de linguagens com programação lógica.
+	* Conjuntos de sentenças em linguagem natural podem ser expressos em forma clausal(Deliyanni e Kowalski).
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
