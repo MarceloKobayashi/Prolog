@@ -1,7 +1,8 @@
-inverte_lista([], []).
-inverte_lista([Head | Tail], ListaFinal) :-
-    inverte_lista(Tail, Resultado), append(Resultado, [Head], ListaFinal).
+lista_invertida([], []).
+lista_invertida([Head | Tail], List) :-
+    lista_invertida(Tail, Result),
+    append(Result, [Head], List).
 
-palindromo(Lista) :-
-    inverte_lista(Lista, Invertida), 
-    Lista = Invertida.
+palindromo(List) :-
+    lista_invertida(List, Invertida),
+    List = Invertida.

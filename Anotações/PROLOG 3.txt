@@ -1,6 +1,6 @@
 PROLOG 3
 
-aaa5-- Deficiências de Prolog
+-- Deficiências de Prolog
 
 - 1) Controle da ordem de resolução
 	* Diretamente prejudicial a uma das vantagens da programação lógica, a de que programas não especificam como as soluções devem ser encontradas.
@@ -64,7 +64,7 @@ aaa5-- Deficiências de Prolog
 	* Entretanto, a programação lógica tem diversas aplicações úteis e é baseada em um conceito intrigante.
 
 
-aaa6-- Aplicações
+-- Aplicações
 
 - 1) SGBDR
 	* Utilizam o SQL, que também é uma linguagem não procedural, pois os usuários não descrevem como obter uma resposta, mas ca-
