@@ -2,10 +2,10 @@
 father(flavio, marcelo).
 father(flavio, caio).
 father(flavio, bruna).
-father(di, flavio).
+father(kobayashi, flavio).
 father(honda, patricia).
 mother(patricia, bruna).
-mother(ba, flavio).
+mother(taira, flavio).
 mother(patricia, marcelo).
 mother(furusho, patricia).
 
